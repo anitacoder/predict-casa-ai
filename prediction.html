@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Predictor</title>
+    <link rel="stylesheet" href="prediction.css">
+       </head>
+<body>
+    <div class="container">
+        <h2>House Prediction</h2>
+        <label for="height">Enter Building Height (m):</label>
+        <input type="number" id="height" placeholder="Height in meters">
+        <button onclick="predictPrice()">Predict Price</button>
+        <h3 id="result"></h3>
+    </div>
+
+    <script>
+        function predictPrice() {
+            let height = document.getElementById("height").value;
+            if (!height) {
+                document.getElementById("result").innerText = "Please enter a valid height.";
+                return;
+            }
+            fetch('http://127.0.0.1:5000/predict?height=' + height)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerText = "Predicted Price: $" + data.price.toFixed(2);
+                })
+                .catch(error => {
+                    document.getElementById("result").innerText = "Error fetching prediction.";
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
